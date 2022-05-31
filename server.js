@@ -131,7 +131,7 @@ app.put('/api/books/:id', async (req, res) => {
   };
 
   console.log(bookNewData)
-  var tmp =    db.books.updateOne(
+  var tmp = await db.books.updateOne(
     {_id:bookId},
     updatedBookInfo,
 
