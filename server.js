@@ -42,6 +42,10 @@ app.get('/api', (req, res) => {
       {method: 'GET', path: '/api', description: 'Describes all available endpoints'},
       {method: 'GET', path: '/api/profile', description: 'Data about me'},
       {method: 'GET', path: '/api/books/', description: 'Get All books information'},
+      {method: 'PUT', path: '/api/books/:id', description: 'Update book'},
+      {method: 'DEL', path: '/api/books/:id', description: 'Delete book'},
+
+
       // TODO: Write other API end-points description here like above
     ]
   })
@@ -79,14 +83,6 @@ app.get('/api/books/', (req, res) => {
  * Add a book information into database
  */
 
-var dummyBook = {
-  title: "String", // title of the book
-  author: "String", // name of the first author
-  releaseDate:"String", // release date of the book
-  genre: "String", //like fiction or non fiction
-  rating: "String", // rating if you have read it out of 5
-  language: "String" // language in which the book is released
-}
 
 app.post('/api/books/', (req, res) => {
 
@@ -117,7 +113,7 @@ app.post('/api/books/', (req, res) => {
 /*
  * Update a book information based upon the specified ID
  */
-app.put('/api/books/:id', (req, res) => {
+app.put('/api/books/:id', async (req, res) => {
   /*
    * Get the book ID and new information of book from the request parameters
    */
@@ -125,19 +121,37 @@ app.put('/api/books/:id', (req, res) => {
   const bookNewData = req.body;
   console.log(`book ID = ${bookId} \n Book Data = ${bookNewData}`);
 
+  var updatedBookInfo = {
+    title: bookNewData.title, // title of the book
+    author: bookNewData.author, // name of the first author
+    releaseDate:bookNewData.releaseDate, // release date of the book
+    genre: bookNewData.genre, //like fiction or non fiction
+    rating: bookNewData.rating, // rating if you have read it out of 5
+    language: bookNewData.language 
+  };
+
+  console.log(bookNewData)
+  var tmp =    db.books.updateOne(
+    {_id:bookId},
+    updatedBookInfo,
+
+  )
+
+ // db.books.replaceOne({_id: bookId}, {updatedBookInfo})
+
+
   /*
    * TODO: use the books model and find using the bookId and update the book information
    */
   /*
    * Send the updated book information as a JSON object
    */
-  var updatedBookInfo = {};
   res.json(updatedBookInfo);
 });
 /*
  * Delete a book based upon the specified ID
  */
-app.delete('/api/books/:id', (req, res) => {
+app.delete('/api/books/:id', async (req, res) => {
   /*
    * Get the book ID of book from the request parameters
    */
@@ -149,7 +163,13 @@ app.delete('/api/books/:id', (req, res) => {
   /*
    * Send the deleted book information as a JSON object
    */
-  var deletedBook = {};
+  var deletedBook = await db.books.findById(bookId)
+
+
+  var bla = await db.books.deleteOne({_id:bookId})
+  console.log("deletedBook")
+
+  console.log(deletedBook)
   res.json(deletedBook);
 });
 
