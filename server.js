@@ -49,14 +49,14 @@ app.get('/api', (req, res) => {
 // TODO:  Fill the values
 app.get('/api/profile', (req, res) => {
   res.json({
-    'name': '',
-    'homeCountry': '',
-    'degreeProgram': '',//informatics or CSE.. etc
-    'email': '',
+    'name': 'Kai',
+    'homeCountry': 'GER',
+    'degreeProgram': 'TUM BWL',//informatics or CSE.. etc
+    'email': 'kai@test.de',
     'deployedURLLink': '',//leave this blank for the first exercise
     'apiDocumentationURL': 'localhost:80/api', //leave this also blank for the first exercise
-    'currentCity': '',
-    'hobbies': []
+    'currentCity': 'MUC',
+    'hobbies': ["programming"]
 
   })
 });
